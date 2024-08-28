@@ -1,9 +1,26 @@
+import { useState } from "react";
 import Square from "./Square";
 import styles from "../styles/Board.module.css"
 
 export default function Board() {
+
+    const [squares,setSquares] = useState(Array(9).fill(null));
+    const [xIsNext, SetXIsNext] = useState(true);
+    
+    const newSquares = squares.slice();
+    
+    function handleClick(i) {
+
+        if (newSquares[i]) return;
+
+        newSquares[i] = xIsNext ? 'X' : 'O';
+
+        setSquares(newSquares);
+        SetXIsNext(!xIsNext);
+    }
+    
     function renderSquare(i) {
-        return <Square value={i} />
+        return <Square value={i} onClick={() => handleClick(i)} />
     }
 
     return (
