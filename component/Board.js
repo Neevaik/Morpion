@@ -4,23 +4,24 @@ import styles from "../styles/Board.module.css"
 
 export default function Board() {
 
-    const [squares,setSquares] = useState(Array(9).fill(null));
-    const [xIsNext, SetXIsNext] = useState(true);
-    
-    const newSquares = squares.slice();
-    
+    const [squares, setSquares] = useState(Array(9).fill(null));
+    const [xIsNext, setXIsNext] = useState(true);
+
+
     function handleClick(i) {
+        const newSquares = squares.slice();
 
         if (newSquares[i]) return;
 
         newSquares[i] = xIsNext ? 'X' : 'O';
 
         setSquares(newSquares);
-        SetXIsNext(!xIsNext);
+        setXIsNext(!xIsNext);
+        console.log(newSquares)
     }
-    
+
     function renderSquare(i) {
-        return <Square value={i} onClick={() => handleClick(i)} />
+        return <Square squares={i} onClick={() => handleClick(i)} />
     }
 
     return (
