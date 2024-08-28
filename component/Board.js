@@ -13,9 +13,11 @@ export default function Board() {
             [0, 1, 2],
             [3, 4, 5],
             [6, 7, 8],
+
             [0, 3, 6],
             [1, 4, 7],
             [2, 5, 8],
+
             [0, 4, 8],
             [2, 4, 6],
         ];
@@ -23,38 +25,39 @@ export default function Board() {
         for (let i = 0; i < lines.length; i++) {
             const [a, b, c] = lines[i];
             if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
-                return squares[a];
+                return {winner:squares[a], winningSquares:[a,b,c]};
             }
         }
-        return null;
+        return {winner:null,winningSquares:[]};
     }
 
     function handleClick(i) {
-        const newSquares = squares.slice();
 
-        if (newSquares[i]) return;
+        const newSquares = squares.slice();
+        const {winner} = calculateWinner(newSquares)
+        if (winner || newSquares[i]){
+            return;
+        };
 
         newSquares[i] = xIsNext ? 'X' : 'O';
-
         setSquares(newSquares);
         setXIsNext(!xIsNext);
-        console.log(newSquares)
     }
-    const winner = calculateWinner(squares);
+
+    const {winner, winningSquares} = calculateWinner(squares);
 
     let status;
-
     if (winner) {
         status = 'Gagnant est : ' + winner;
     } else if (!squares.includes(null)) {
         status = 'Match Nul';
     } else {
-        status = 'Prochain joueur : ' + (xIsNext ? 'X' : '0');
+        status = 'Prochain joueur : ' + (xIsNext ? 'X' : 'O');
     }
 
 
     function renderSquare(i) {
-        return <Square squares={i} onClick={() => handleClick(i)} />
+        return <Square value={squares[i]} onClick={() => handleClick(i)} isWinning={winningSquares.includes(i)} />
     }
 
     return (
