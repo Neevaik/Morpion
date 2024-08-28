@@ -7,23 +7,19 @@ export default function Board() {
     const [squares, setSquares] = useState(Array(9).fill(null));
     const [xIsNext, setXIsNext] = useState(true);
 
+    const lines = [
+        [0, 1, 2],
+        [3, 4, 5],
+        [6, 7, 8],
+        [0, 3, 6],
+        [1, 4, 7],
+        [2, 5, 8],
+        [0, 4, 8],
+        [2, 4, 6],
+    ];
+
     function calculateWinner(squares) {
-
-        const lines = [
-            [0, 1, 2],
-            [3, 4, 5],
-            [6, 7, 8],
-
-            [0, 3, 6],
-            [1, 4, 7],
-            [2, 5, 8],
-
-            [0, 4, 8],
-            [2, 4, 6],
-        ];
-
-        for (let i = 0; i < lines.length; i++) {
-            const [a, b, c] = lines[i];
+        for (const [a, b, c] of lines) {
             if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
                 return { winner: squares[a], winningSquares: [a, b, c] };
             }
@@ -33,12 +29,9 @@ export default function Board() {
 
     function handleClick(i) {
 
-        const newSquares = squares.slice();
-        const { winner } = calculateWinner(newSquares)
-        if (winner || newSquares[i]) {
-            return;
-        };
+        if (squares[i] || calculateWinner(squares).winner) return;
 
+        const newSquares = squares.slice();
         newSquares[i] = xIsNext ? 'X' : 'O';
         setSquares(newSquares);
         setXIsNext(!xIsNext);
@@ -49,16 +42,18 @@ export default function Board() {
         setXIsNext(true);
     }
 
+    // Avant
+    //     const { winner, winningSquares } = calculateWinner(squares);
+    // let status;
+    // if (winner) {
+    //   status = 'Gagnant : ' + winner;
+    // } else if (!squares.includes(null)) {
+    //   status = 'Match nul !';
+    // } else {
+    //   status = 'Prochain joueur : ' + (xIsNext ? 'X' : 'O');
+    // }
     const { winner, winningSquares } = calculateWinner(squares);
-
-    let status;
-    if (winner) {
-        status = 'Gagnant est : ' + winner;
-    } else if (!squares.includes(null)) {
-        status = 'Match Nul';
-    } else {
-        status = 'Prochain joueur : ' + (xIsNext ? 'X' : 'O');
-    }
+    const status = winner ? `Gagnant : ${winner}` : !squares.includes(null) ? `Match nul !` : `Prochain joueur : ${xIsNext ? 'X ' : 'O'}`;
 
 
     function renderSquare(i) {
