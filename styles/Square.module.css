@@ -1,16 +1,24 @@
 .square {
     width: 100px;
     height: 100px;
-    background-color: rgb(214, 225, 234);
-    border:1px solid #000;
-    font-size: 24px;
+    background-color: #f0f0f0;
+    border:2px solid #ccc;
+    font-size: 36px;
     font-weight: bold;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
+    transition: background-color 0.3s, box-shadow 0.3s;
+    border-radius: 8px;
 }
 
+.square:hover {
+    background-color: #e0e0e0;
+  }
+
 .winning{
-    background-color: yellow;
+    background-color: #ffeb3b;
+    color:#000;
+    font-weight: bold;
 }
